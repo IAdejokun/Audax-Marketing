@@ -5,6 +5,36 @@ import {
 import WhoWeAre from "@/components/WhoWeAre";
 import MissionVisionCard from "@/components/MissionVisionCard";
 import CoreValues from "@/components/CoreValues";
+import WhatWeDo from "@/components/WhatWeDo";
+import WhyWorkWithUs from "@/components/WhyWorkWithUs";
+import CTABannerFramed from "@/components/CTABannerFramed";
+import Footer from '@/components/footer';
+const steps = [
+  {
+    title: "Deep-Dive Audit",
+    desc: "We start by digging into your current strategy to uncover what’s working, what’s wasting money, and where your biggest growth opportunities are hiding.",
+    // Replace these with your actual assets in /public
+    img: "/search.png",
+  },
+
+  {
+    title: "360° Growth Blueprint",
+    desc: "Next, we build a custom growth plan that connects SEO, email, and social media into one high-performing, unified marketing system.",
+    img: "/pie-chart.png",
+  },
+
+  {
+    title: "Flawless Execution",
+    desc: "We handle the heavy lifting writing, building, optimizing so you get campaigns that don’t just launch, they actually perform.",
+    img: "/bullseye-arrow.png",
+  },
+
+  {
+    title: "Data-Driven Refinement",
+    desc: "Once the results start rolling in, we let the numbers lead. We test, refine, and scale what converts to turn solid performance into sustained profit.",
+    img: "/rocket.png",
+  },
+];
 
 
 export default function About() {
@@ -13,7 +43,7 @@ export default function About() {
       <header className="relative overflow-hidden">
         {/* same soft wash as your hero */}
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[#F3F8FF] via-white/60 to-transparent" />
-        <Navbar /> {/* move the nav INSIDE the header */}
+        <Navbar tone="light" /> {/* move the nav INSIDE the header */}
         <div className="max-w-7xl mx-auto px-4 py-10 md:py-16 grid md:grid-cols-2 gap-10 items-center">
           {/* Left: text */}
           <div>
@@ -89,15 +119,63 @@ export default function About() {
 
       {/* Core Values Begin */}
 
-      <CoreValues
-        values={[
-          { text: "Revenue Over Reach…", iconSrc: "/check-blue.png" },
-          { text: "Authentic Connection…", iconSrc: "/check-blue.png" },
-          // ...
-        ]}
-      />
+      <CoreValues />
 
-      {/* Core Values End */}
+      {/* Core Values Ended */}
+
+      {/* what we do begin */}
+      <WhatWeDo />
+      {/* what we do ended */}
+
+      {/* simplicity results begin  */}
+
+      <section className="px-4 py-16">
+        <div className="mx-auto max-w-7xl rounded-[44px] md:rounded-[56px] bg-gradient-to-b from-[#2D8CFF] to-[#0057D9] text-white shadow-sm">
+          <div className="px-6 md:px-12 pt-12 md:pt-16 text-center">
+            <h2 className="text-4xl md:text-6xl font-semibold tracking-tight">
+              Our Process
+            </h2>
+            <p className="mt-4 mb-12 text-sm md:text-base text-white/90">
+              Smart Strategy. Relentless Execution. Measurable Growth.
+            </p>
+          </div>
+
+          <div className="grid gap-10 md:gap-12 md:grid-cols-4 px-6 md:px-12 pb-14">
+            {steps.map((s, i) => (
+              <div key={i} className="text-center">
+                {/* Image placeholder + real image layer */}
+                <div className="relative mx-auto mb-6 h-16 w-16 md:h-20 md:w-20">
+                  {/* Placeholder sits under the <img>; if the image is missing, you still see this */}
+                  <img
+                    src={s.img}
+                    alt={s.title}
+                    className="absolute inset-0 h-full w-full object-contain"
+                    loading="lazy"
+                  />
+                </div>
+
+                <h3 className="mx-auto max-w-xs text-lg md:text-xl font-semibold leading-snug">
+                  {s.title}
+                </h3>
+
+                <p className="mx-auto mt-4 max-w-xs text-sm text-white/90">
+                  {s.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* simplicity results end */}
+
+      {/* Why work with us begin */}
+      <WhyWorkWithUs />
+      {/* Why work with us ended */}
+
+      <CTABannerFramed />
+
+      <Footer />
     </>
   );
 }

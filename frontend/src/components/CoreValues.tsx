@@ -1,19 +1,30 @@
-type Value = { text: string; iconSrc?: string; iconAlt?: string };
+import {
+  CheckCircle,
+} from "lucide-react";
+import type { ComponentType } from "react";
+
+type Value = { text: string; icon?: ComponentType<{ className?: string }> };
 
 export default function CoreValues({
   title = "Core Values",
   values = [
     {
       text: "Revenue Over Reach: Focus on strategies that build your bottom line, not vanity metrics.",
+      icon: CheckCircle,
     },
     {
       text: "Authentic Connection: Build relationships not just follower counts.",
+      icon: CheckCircle,
     },
     {
       text: "Customer solutions: No templates, strategies tailored to your business.",
+      icon: CheckCircle,
     },
-    { text: "Measurable Growth: Track ROI, not vanity stats." },
-  ],
+    {
+      text: "Measurable Growth: Track ROI, not vanity stats.",
+      icon: CheckCircle,
+    },
+  ] as Value[],
 }: {
   title?: string;
   values?: Value[];
@@ -30,37 +41,24 @@ export default function CoreValues({
             </div>
           </div>
 
-          {/* values list */}
+          {/* list */}
           <ul className="mt-4 space-y-3 md:space-y-4">
-            {values.map((v, i) => (
-              <li
-                key={i}
-                className="flex items-start gap-3 rounded-full bg-slate-100 px-4 py-3 text-slate-700"
-              >
-                {/* icon: use provided image if given, else fallback to a tiny check */}
-                {v.iconSrc ? (
-                  <img
-                    src={v.iconSrc}
-                    alt={v.iconAlt || "bullet"}
-                    className="mt-0.5 h-4 w-4 object-contain"
-                    loading="lazy"
-                  />
-                ) : (
-                  <span
-                    aria-hidden
-                    className="mt-0.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-blue-600"
-                  >
-                    {/* tiny check mark */}
-                    <svg viewBox="0 0 12 10" className="h-2.5 w-2.5 fill-white">
-                      <path d="M4.2 7.3 1.8 4.9 0.7 6l3.5 3.3L11.3 2.1 10.2 1z" />
-                    </svg>
+            {values.map((v, i) => {
+              const Icon = v.icon ?? CheckCircle; // default icon
+              return (
+                <li
+                  key={i}
+                  className="flex items-start gap-3 rounded-full bg-slate-100 px-4 py-3 text-slate-700"
+                >
+                  <span className="mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600">
+                    <Icon className="h-3.5 w-3.5 text-white" />
                   </span>
-                )}
-                <span className="text-sm md:text-[15px] leading-6">
-                  {v.text}
-                </span>
-              </li>
-            ))}
+                  <span className="text-sm md:text-[15px] leading-6">
+                    {v.text}
+                  </span>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>

@@ -1,19 +1,31 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
-import { ArrowRight, Menu, X } from "lucide-react";
+import { NavLink, useLocation } from "react-router-dom";
+import { ArrowRight, Menu, X, ChevronDown } from "lucide-react";
+import LogoWordmark from "@/components/LogoWordMark";
 
-const LINKS = [
-  { label: "Home", to: "/" },
-  { label: "Pricing", to: "/pricing" },
-  { label: "Services", to: "/services" },
-  { label: "Blog", to: "/blog" },
-  { label: "About Us", to: "/about" },
+const SERVICES_SUBNAV = [
+  { label: "Social Media Marketing", to: "/services/SocialMediaService" },
+  { label: "Email & SMS Marketing", to: "/services/EmailService" },
+  //{ label: "SEO", to: "/services/seo" },
 ];
 
-export default function NavbarHero() {
-  const [open, setOpen] = useState(false);
+const isServicesPath = (path: string) => /^\/services(\/|$)/.test(path);
 
-  // lock scroll when drawer open
+type Props = {
+  tone?: "light" | "dark";
+  fixed?: boolean; // overlay at top
+  reserveSpace?: boolean; // add spacer div under a fixed nav
+};
+
+export default function NavbarHero({
+  tone = "light",
+  fixed = true,
+  reserveSpace = true,
+}: Props) {
+  const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
+  const servicesActive = isServicesPath(pathname);
+
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = open ? "hidden" : prev;
@@ -26,129 +38,220 @@ export default function NavbarHero() {
     "bg-blue-600 text-white shadow-[0_4px_14px_rgba(37,99,235,.35)] ring-1 ring-blue-500/35";
   const idleChip = "text-slate-700 hover:text-blue-600";
 
+  const contactText = tone === "dark" ? "text-white" : "text-slate-900";
+  const contactRing = tone === "dark" ? "ring-white/80" : "ring-blue-600";
+  const contactIcon = tone === "dark" ? "text-white" : "text-blue-700";
+
+  const wrapperCls = fixed
+    ? "fixed top-0 left-0 right-0 z-40"
+    : "relative z-20";
+
   return (
     <>
-      <div className="max-w-7xl mx-auto px-4 pt-6">
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4">
-          {/* logo */}
-          <a href="/" className="flex items-center gap-2">
-            <img src="/logo.png" alt="Audax Marketing" className="h-9 w-auto" />
-            <span className="hidden sm:block font-semibold tracking-wide">
-              AUDAX
-            </span>
-            <span className="hidden sm:block text-slate-500 -ml-1">
-              MARKETING
-            </span>
-          </a>
+      {/* NAVBAR */}
+      <div className={wrapperCls}>
+        <div className="max-w-7xl mx-auto px-4 pt-4 md:pt-5">
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4">
+            {/* Logo */}
+            {/* Logo block */}
+            <LogoWordmark tone={tone} markSrc="/logo.png" />
 
-          {/* centered nav island — light like the hero */}
-          <nav
-            className="hidden md:flex items-center gap-1 rounded-full
-                          bg-white/70 supports-[backdrop-filter]:bg-white/60 backdrop-blur
-                          ring-1 ring-black/5 shadow-[0_1px_0_rgba(255,255,255,.6),0_6px_20px_rgba(15,23,42,.06)]
-                          px-1 py-1"
-          >
-            {LINKS.map(({ label, to }) => (
+            {/* Nav island */}
+            <nav
+              className="hidden md:flex items-center gap-1 rounded-full
+                         bg-white/70 supports-[backdrop-filter]:bg-white/60 backdrop-blur
+                         ring-1 ring-black/5 shadow-[0_1px_0_rgba(255,255,255,.6),0_6px_20px_rgba(15,23,42,.06)]
+                         px-1 py-1"
+            >
               <NavLink
-                key={to}
-                to={to}
-                end={to === "/"}
+                to="/"
+                end
                 className={({ isActive }) =>
                   `px-4 py-2 rounded-full text-sm ${
                     isActive ? activeChip : idleChip
                   }`
                 }
               >
-                {label}
+                Home
               </NavLink>
-            ))}
-          </nav>
+              <NavLink
+                to="/pricing"
+                className={({ isActive }) =>
+                  `px-4 py-2 rounded-full text-sm ${
+                    isActive ? activeChip : idleChip
+                  }`
+                }
+              >
+                Pricing
+              </NavLink>
 
-          {/* contact + hamburger */}
-          <div className="justify-self-end flex items-center gap-3">
-            <NavLink
-              to="/contact"
-              className="hidden sm:inline-flex items-center gap-2 text-sm"
-            >
-              <span className="font-medium">Contact Us</span>
-              <span className="inline-flex h-6 w-6 items-center justify-center rounded-full ring-1 ring-blue-600">
-                <ArrowRight className="h-3.5 w-3.5 text-blue-700" />
-              </span>
-            </NavLink>
+              <div className="relative group/drop">
+                <NavLink
+                  to="/services"
+                  className={`px-4 py-2 rounded-full text-sm inline-flex items-center gap-1 ${
+                    servicesActive ? activeChip : idleChip
+                  }`}
+                >
+                  Services <ChevronDown className="h-4 w-4 opacity-80" />
+                </NavLink>
+                <div className="absolute left-1/2 top-full -translate-x-1/2 z-50 pt-2 opacity-0 pointer-events-none transition group-hover/drop:opacity-100 group-hover/drop:pointer-events-auto group-focus-within/drop:opacity-100 group-focus-within/drop:pointer-events-auto">
+                  <div className="w-64 rounded-2xl bg-white/90 backdrop-blur ring-1 ring-black/5 shadow-xl p-2">
+                    {SERVICES_SUBNAV.map((s) => (
+                      <NavLink
+                        key={s.to}
+                        to={s.to}
+                        className={({ isActive }) =>
+                          `block rounded-xl px-3 py-2 text-sm ${
+                            isActive
+                              ? "bg-blue-50 text-blue-700"
+                              : "text-slate-700 hover:bg-slate-100"
+                          }`
+                        }
+                      >
+                        {s.label}
+                      </NavLink>
+                    ))}
+                  </div>
+                </div>
+              </div>
 
-            <button
-              onClick={() => setOpen(true)}
-              className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full ring-1 ring-slate-300 hover:bg-slate-50"
-              aria-label="Open menu"
-            >
-              <Menu className="h-5 w-5" />
-            </button>
+              <NavLink
+                to="/blog"
+                className={({ isActive }) =>
+                  `px-4 py-2 rounded-full text-sm ${
+                    isActive ? activeChip : idleChip
+                  }`
+                }
+              >
+                Blog
+              </NavLink>
+              <NavLink
+                to="/about"
+                className={({ isActive }) =>
+                  `px-4 py-2 rounded-full text-sm ${
+                    isActive ? activeChip : idleChip
+                  }`
+                }
+              >
+                About
+              </NavLink>
+            </nav>
+
+            {/* Contact + mobile */}
+            <div className="justify-self-end flex items-center gap-3">
+              <NavLink
+                to="/contact"
+                className={`hidden sm:inline-flex items-center gap-2 text-sm ${contactText}`}
+              >
+                <span className="font-medium">Contact Us</span>
+                <span
+                  className={`inline-flex h-6 w-6 items-center justify-center rounded-full ring-1 ${contactRing}`}
+                >
+                  <ArrowRight className={`h-3.5 w-3.5 ${contactIcon}`} />
+                </span>
+              </NavLink>
+
+              <button
+                onClick={() => setOpen(true)}
+                className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full ring-1 ring-slate-300 hover:bg-slate-50"
+                aria-label="Open menu"
+              >
+                <Menu className="h-5 w-5" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Mobile drawer (keeps active link blue) */}
+      {/* Spacer: only for fixed nav when you want to push normal content down. 
+         On hero pages set reserveSpace={false} so hero covers the top. */}
+      {fixed && reserveSpace && <div className="h-[76px] md:h-[88px]" />}
+
+      {/* Mobile drawer */}
       <div
+        className={`fixed inset-0 z-[60] transition ${
+          open ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
         onClick={() => setOpen(false)}
-        className={`fixed inset-0 z-40 bg-black/40 transition-opacity md:hidden ${
-          open
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        }`}
-      />
-      <aside
-        className={`fixed right-0 top-0 z-50 h-full w-[82%] max-w-xs bg-white shadow-xl md:hidden
-        transform transition-transform duration-300 ${
-          open ? "translate-x-0" : "translate-x-full"
-        }`}
-        role="dialog"
-        aria-modal="true"
       >
-        <div className="flex items-center justify-between px-4 py-4 border-b">
-          <a href="/" className="flex items-center gap-2">
-            <img src="/logo.png" alt="Audax Marketing" className="h-8 w-auto" />
-            <span className="font-semibold tracking-wide">AUDAX</span>
-          </a>
-          <button
-            onClick={() => setOpen(false)}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full hover:bg-slate-100"
-            aria-label="Close menu"
-          >
-            <X className="h-5 w-5" />
-          </button>
-        </div>
-
-        <nav className="px-4 py-3">
-          {LINKS.map(({ label, to }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={to === "/"}
+        <div className="absolute inset-0 bg-black/40" />
+        <div
+          className={`absolute right-0 top-0 h-full w-80 bg-white shadow-xl transition-transform ${
+            open ? "translate-x-0" : "translate-x-full"
+          }`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex items-center justify-between p-4 border-b">
+            <img src="/logo.png" alt="Audax" className="h-8" />
+            <button
+              className="h-9 w-9 inline-flex items-center justify-center rounded-md ring-1 ring-slate-300"
               onClick={() => setOpen(false)}
-              className={({ isActive }) =>
-                `block rounded-lg px-3 py-3 text-base font-medium ${
-                  isActive
-                    ? "bg-blue-600 text-white"
-                    : "text-slate-700 hover:bg-slate-100"
-                }`
-              }
+              aria-label="Close menu"
             >
-              {label}
-            </NavLink>
-          ))}
+              <X className="h-5 w-5" />
+            </button>
+          </div>
 
-          <div className="mt-4 border-t pt-4">
+          <nav className="p-3 space-y-1">
+            <NavLink
+              to="/"
+              end
+              className="block rounded-lg px-3 py-2 text-slate-800 hover:bg-slate-100"
+              onClick={() => setOpen(false)}
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to="/pricing"
+              className="block rounded-lg px-3 py-2 text-slate-800 hover:bg-slate-100"
+              onClick={() => setOpen(false)}
+            >
+              Pricing
+            </NavLink>
+            <div className="px-3 py-2 text-slate-500 uppercase text-xs">
+              Services
+            </div>
+            <NavLink
+              to="/services"
+              className="block rounded-lg px-5 py-2 text-slate-800 hover:bg-slate-100"
+              onClick={() => setOpen(false)}
+            >
+              All Services
+            </NavLink>
+            {SERVICES_SUBNAV.map((s) => (
+              <NavLink
+                key={s.to}
+                to={s.to}
+                className="block rounded-lg px-5 py-2 text-slate-800 hover:bg-slate-100"
+                onClick={() => setOpen(false)}
+              >
+                {s.label}
+              </NavLink>
+            ))}
+            <NavLink
+              to="/blog"
+              className="block rounded-lg px-3 py-2 text-slate-800 hover:bg-slate-100"
+              onClick={() => setOpen(false)}
+            >
+              Blog
+            </NavLink>
+            <NavLink
+              to="/about"
+              className="block rounded-lg px-3 py-2 text-slate-800 hover:bg-slate-100"
+              onClick={() => setOpen(false)}
+            >
+              About
+            </NavLink>
             <NavLink
               to="/contact"
+              className="block rounded-lg px-3 py-2 text-slate-800 hover:bg-slate-100"
               onClick={() => setOpen(false)}
-              className="inline-flex items-center gap-2 rounded-full bg-blue-600 text-white px-4 py-2 text-sm hover:bg-blue-700"
             >
-              Contact Us
-              <ArrowRight className="h-4 w-4" />
+              Contact
             </NavLink>
-          </div>
-        </nav>
-      </aside>
+          </nav>
+        </div>
+      </div>
     </>
   );
 }

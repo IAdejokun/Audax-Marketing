@@ -58,7 +58,7 @@ export default function Home() {
             {/* subtle page gradient */}
             <div className="absolute inset-0 -z-10 bg-gradient-to-br from-blue-50 via-white to-amber-50" />
 
-            <Navbar />
+            <Navbar tone="light" />
 
             <div className="max-w-7xl mx-auto px-4 py-10 md:py-16 grid md:grid-cols-2 gap-10 items-center">
               {/* Left: copy */}
@@ -304,7 +304,7 @@ export default function Home() {
 
           {/* call to action begin */}
 
-         <CTABanner/>
+          <CTABanner />
 
           {/* call to action end */}
 
