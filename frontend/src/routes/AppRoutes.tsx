@@ -8,6 +8,7 @@ import Services from "@/pages/Services";
 // services detail pages
 import SocialMediaService from "@/pages/services/SocialMediaService";
 import EmailService from "@/pages/services/EmailService";
+import SeoService from "@/pages/services/SeoService";
 
 // import ServicesEmailSms from "@/pages/services/EmailSms";
 // import ServicesSeo from "@/pages/services/Seo";             // /services/seo
@@ -30,10 +31,9 @@ export default function AppRoutes() {
         path="/services/SocialMediaService"
         element={<SocialMediaService />}
       />
-      <Route
-        path="/services/EmailService"
-        element={<EmailService />}
-      />
+      <Route path="/services/EmailService" element={<EmailService />} />
+
+      <Route path="/services/SeoService" element={<SeoService />} />
 
       {/* <Route path="/services/email-sms" element={<ServicesEmailSms />} />
       <Route path="/services/seo" element={<ServicesSeo />} /> */}

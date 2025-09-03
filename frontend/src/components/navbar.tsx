@@ -6,7 +6,7 @@ import LogoWordmark from "@/components/LogoWordMark";
 const SERVICES_SUBNAV = [
   { label: "Social Media Marketing", to: "/services/SocialMediaService" },
   { label: "Email & SMS Marketing", to: "/services/EmailService" },
-  //{ label: "SEO", to: "/services/seo" },
+  { label: "SEO", to: "/services/SeoService" },
 ];
 
 const isServicesPath = (path: string) => /^\/services(\/|$)/.test(path);
@@ -50,10 +50,19 @@ export default function NavbarHero({
     <>
       {/* NAVBAR */}
       <div className={wrapperCls}>
-        <div className="max-w-7xl mx-auto px-4 pt-4 md:pt-5">
+        {/* changed: add `relative` so we can absolutely position the mobile button */}
+        <div className="max-w-7xl mx-auto px-4 pt-4 md:pt-5 relative">
+          {/* mobile hamburger — out of the grid, fixed to top-right */}
+          <button
+            onClick={() => setOpen(true)}
+            className="md:hidden absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full ring-1 ring-slate-300 bg-white/90 backdrop-blur hover:bg-slate-50"
+            aria-label="Open menu"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+
           <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4">
             {/* Logo */}
-            {/* Logo block */}
             <LogoWordmark tone={tone} markSrc="/logo.png" />
 
             {/* Nav island */}
@@ -73,16 +82,6 @@ export default function NavbarHero({
                 }
               >
                 Home
-              </NavLink>
-              <NavLink
-                to="/pricing"
-                className={({ isActive }) =>
-                  `px-4 py-2 rounded-full text-sm ${
-                    isActive ? activeChip : idleChip
-                  }`
-                }
-              >
-                Pricing
               </NavLink>
 
               <div className="relative group/drop">
@@ -137,11 +136,11 @@ export default function NavbarHero({
               </NavLink>
             </nav>
 
-            {/* Contact + mobile */}
-            <div className="justify-self-end flex items-center gap-3">
+            {/* Contact (desktop). Mobile hamburger is now absolute at top-right. */}
+            <div className="justify-self-end hidden md:flex items-center gap-3">
               <NavLink
                 to="/contact"
-                className={`hidden sm:inline-flex items-center gap-2 text-sm ${contactText}`}
+                className={`inline-flex items-center gap-2 text-sm ${contactText}`}
               >
                 <span className="font-medium">Contact Us</span>
                 <span
@@ -150,21 +149,13 @@ export default function NavbarHero({
                   <ArrowRight className={`h-3.5 w-3.5 ${contactIcon}`} />
                 </span>
               </NavLink>
-
-              <button
-                onClick={() => setOpen(true)}
-                className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full ring-1 ring-slate-300 hover:bg-slate-50"
-                aria-label="Open menu"
-              >
-                <Menu className="h-5 w-5" />
-              </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Spacer: only for fixed nav when you want to push normal content down. 
-         On hero pages set reserveSpace={false} so hero covers the top. */}
+      {/* Spacer: only for fixed nav when you want to push normal content down.
+          On hero pages set reserveSpace={false} so hero covers the top. */}
       {fixed && reserveSpace && <div className="h-[76px] md:h-[88px]" />}
 
       {/* Mobile drawer */}
@@ -200,13 +191,6 @@ export default function NavbarHero({
               onClick={() => setOpen(false)}
             >
               Home
-            </NavLink>
-            <NavLink
-              to="/pricing"
-              className="block rounded-lg px-3 py-2 text-slate-800 hover:bg-slate-100"
-              onClick={() => setOpen(false)}
-            >
-              Pricing
             </NavLink>
             <div className="px-3 py-2 text-slate-500 uppercase text-xs">
               Services

@@ -1,5 +1,5 @@
 // EmailServicesBody.tsx
-import { Check, CheckCircle } from "lucide-react";
+import { CheckCircle, HelpCircle } from "lucide-react";
 import React from "react";
 
 /* ---------- tiny bits ---------- */
@@ -8,7 +8,7 @@ function ChipCheck({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-3">
       <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600">
-        <Check className="h-3 w-3 text-white" />
+        <HelpCircle className="h-3.5 w-3.5 text-white" />
       </span>
       <div className="flex-1 rounded-full bg-white/90 px-3 py-2 text-xs text-slate-700 ring-1 ring-blue-100">
         {children}
@@ -197,7 +197,6 @@ export default function EmailServicesBody() {
     { src: "/brands/Drip.png", alt: "Drip" },
     { src: "/brands/SmartrMail.png", alt: "SmartrMail" },
   ];
-
 
   return (
     <div className="w-full">

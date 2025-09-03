@@ -1,11 +1,11 @@
-import { CheckCircle, ArrowRight } from "lucide-react";
+import { CheckCircle, ArrowRight, HelpCircle } from "lucide-react";
 
 /* Tiny check pill --------------------------------------------------------- */
 function TinyPill({ text }: { text: string }) {
   return (
     <div className="flex items-center gap-2 rounded-full bg-white/90 px-3 py-2 text-[13px] text-slate-700 ring-1 ring-black/5">
       <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-blue-600">
-        <CheckCircle className="h-2.5 w-2.5 text-white" />
+        <HelpCircle className="h-2.5 w-2.5 text-white" />
       </span>
       <span>{text}</span>
     </div>
@@ -138,7 +138,11 @@ function OfferGrid() {
 }
 
 /* 3) Why choose banner ---------------------------------------------------- */
-function WhyChooseBanner({ bgSrc = "/socialmediaservice.png" }: { bgSrc?: string }) {
+function WhyChooseBanner({
+  bgSrc = "/socialmediaservice.png",
+}: {
+  bgSrc?: string;
+}) {
   const bullets = [
     "Convert followers into customers with proven frameworks",
     "Eliminate content guesswork with strategy-led execution",
